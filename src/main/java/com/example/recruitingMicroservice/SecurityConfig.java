@@ -1,4 +1,4 @@
-package com.example.microservicetemplate;
+package com.example.recruitingMicroservice;
 
 
 import org.springframework.context.annotation.Bean;
