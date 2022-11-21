@@ -1,4 +1,4 @@
-package com.example.microservicetemplate;
+package com.example.recruitingMicroservice;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.common.config.TopicConfig;
