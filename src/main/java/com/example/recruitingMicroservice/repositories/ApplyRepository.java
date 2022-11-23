@@ -1,20 +1,21 @@
 package com.example.recruitingMicroservice.repositories;
 
 import com.example.recruitingMicroservice.entity.Apply;
+import com.example.recruitingMicroservice.entity.ApplyId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ApplyRepository extends JpaRepository<Apply, Integer> {
+public interface ApplyRepository extends JpaRepository<Apply, ApplyId> {
 
      List<Apply> findAll();
 
-     List<Apply> findAppliesByApplicant(String id_jobseeker);
+     List<Apply> findAppliesByIdIdApplicantIsContaining(Integer id_applicant);
 
-     Apply findApplyById(Integer id_apply);
+     Apply findApplyById(ApplyId id);
 
      Apply save(Apply apply);
 
      @Override
-     void deleteById(Integer integer);
+     void delete(Apply apply);
 }
