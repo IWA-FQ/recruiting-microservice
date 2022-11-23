@@ -1,60 +1,41 @@
 package com.example.recruitingMicroservice.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
 @Table(name = "apply")
 public class Apply {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Column(name = "offer")
-    private Integer offer;
-    @Column(name = "applicant")
-    private String applicant;
-    @Column(name = "date")
-    private Date date;
 
-    public Integer getId() {
+    @EmbeddedId
+    private ApplyId id;
+
+    @Column(name = "last_updated")
+    private Timestamp lastUpdated;
+
+    public ApplyId getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(ApplyId id) {
         this.id = id;
     }
 
-    public Integer getOffer() {
-        return offer;
+    public Timestamp getLastUpdated() {
+        return lastUpdated;
     }
 
-    public void setOffer(Integer offer) {
-        this.offer = offer;
-    }
-
-    public String getApplicant() {
-        return applicant;
-    }
-
-    public void setApplicant(String applicant) {
-        this.applicant = applicant;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    public void setLastUpdated(Timestamp lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     @Override
     public String toString() {
         return "Offer{" +
-                "id=" + this.getId() +
-                ", offer='" + this.getOffer() +
-                ", applicant='" + this.getApplicant() +
-                ", date='" + this.getDate() +
+                ", offer='" + this.getId().getIdOffer() +
+                ", applicant='" + this.getId().getIdApplicant() +
+                ", date='" + this.getLastUpdated() +
                 '}';
     }
 }

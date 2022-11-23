@@ -1,21 +1,21 @@
 package com.example.recruitingMicroservice.repositories;
 
 import com.example.recruitingMicroservice.entity.Apply;
+import com.example.recruitingMicroservice.entity.ApplyId;
 import com.example.recruitingMicroservice.entity.Recruiting;
+import com.example.recruitingMicroservice.entity.RecruitingId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface RecruitingRepository extends JpaRepository<Recruiting, Integer> {
+public interface RecruitingRepository extends JpaRepository<Recruiting, RecruitingId> {
 
      List<Recruiting> findAll();
 
-     List<Recruiting> findAllByEmployer(Integer id_employer);
-
-     Recruiting findRecruitingBy(Integer id_recruiting);
+     Recruiting findRecruitingById(RecruitingId id);
 
      Recruiting save(Recruiting recruiting);
 
      @Override
-     void deleteById(Integer integer);
+     void deleteById(RecruitingId id);
 }

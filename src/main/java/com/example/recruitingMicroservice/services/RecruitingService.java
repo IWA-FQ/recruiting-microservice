@@ -2,11 +2,11 @@ package com.example.recruitingMicroservice.services;
 
 import com.example.recruitingMicroservice.entity.Apply;
 import com.example.recruitingMicroservice.entity.Recruiting;
+import com.example.recruitingMicroservice.entity.RecruitingId;
 import com.example.recruitingMicroservice.repositories.ApplyRepository;
 import com.example.recruitingMicroservice.repositories.RecruitingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,8 +22,9 @@ public class RecruitingService {
         return recruitingRepository.findAll();
     }
 
-    public Recruiting getById(Integer id_recruiting) {
-        return recruitingRepository.findRecruitingBy(id_recruiting);
+    public Recruiting getByOfferAndApplicant(Integer id_offer, Integer id_employee) {
+        RecruitingId recruitingId = new RecruitingId(id_employee,id_offer);
+        return recruitingRepository.findRecruitingById(recruitingId);
     }
 
     /**
@@ -32,45 +33,41 @@ public class RecruitingService {
      */
     public void hireSomeone(Apply apply) {
         Recruiting recruiting = new Recruiting();
-        recruiting.setOffer(apply.getOffer());
-        recruiting.setEmployee(apply.getApplicant());
-        Date date = new Date();
-        System.out.println(date);
-        recruiting.setDate(date);
+        RecruitingId recruitingId = new RecruitingId(apply.getId().getIdOffer(),apply.getId().getIdApplicant());
+        recruiting.setId(recruitingId);
         recruitingRepository.save(recruiting);
-        applyRepository.deleteById(apply.getId());
+        applyRepository.delete(apply);
     }
 
     /**
      *
-     * @param id_recruiting
+     * @param id_offer
+     * @param id_employee
      * @param rate
      * @param role
      */
-    public void rateSomeone(Integer id_recruiting, Integer rate, String role) {
-        if(role == "employer") { this.rateEmployee(id_recruiting,rate);}
-        else if(role == "employee"){ this.rateEmployee(id_recruiting,rate);}
+    public void rateSomeone(Integer id_offer, Integer id_employee, Integer rate, String role) {
+        RecruitingId recruitingId = new RecruitingId(id_offer,id_employee);
+        Recruiting recruiting = recruitingRepository.findRecruitingById(recruitingId);
+        if(role == "employer") { this.rateEmployee(recruiting,rate);}
+        else if(role == "jobseeker"){ this.rateEmployee(recruiting,rate);}
     }
 
     /**
-     *
-     * @param id_recruiting
+     * @param recruiting
      * @param rate
      */
-    private void rateEmployer(Integer id_recruiting, Integer rate) {
-        Recruiting recruiting = recruitingRepository.findRecruitingBy(id_recruiting);
-        recruiting.setRate_employer(rate);
+    private void rateEmployer(Recruiting recruiting, Integer rate) {
+        recruiting.setRateEmployer(rate);
         recruitingRepository.save(recruiting);
     }
 
     /**
-     *
-     * @param id_recruiting
+     * @param recruiting
      * @param rate
      */
-    private void rateEmployee(Integer id_recruiting, Integer rate) {
-        Recruiting recruiting = recruitingRepository.findRecruitingBy(id_recruiting);
-        recruiting.setRate_employee(rate);
+    private void rateEmployee(Recruiting recruiting, Integer rate) {
+        recruiting.setRateEmployee(rate);
         recruitingRepository.save(recruiting);
     }
 }
